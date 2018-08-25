@@ -18,7 +18,7 @@ set-slow-log:
 	sudo mysql -uishocon -pishocon -e "set global log_queries_not_using_indexes = 1"
 
 mysqldumpslow:
-	sudo mysqldumpslow -s t /var/lib/mysql/13.114.208.13-slow.log > ~/tmp/slow.log
+	sudo mysqldumpslow -s t /var/lib/mysql/ip-10-0-1-227-slow.log > ~/tmp/slow.log
 
 restart-mysql:
 	sudo mysql restart
