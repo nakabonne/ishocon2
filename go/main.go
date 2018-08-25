@@ -188,12 +188,14 @@ func main() {
 			/*for i := 1; i <= voteCount; i++ {
 				createVote(user.ID, candidate.ID, c.PostForm("keyword"))
 			}*/
-			if err := createVotes(voteCount, user.ID, candidate.ID, c.PostForm("keyword")); err != nil {
-				fmt.Printf("userは\n %#v\n", user)
-				fmt.Printf("user.Votesは%v\n", user.Votes)
-				fmt.Printf("voteCountは%v\n", voteCount)
-				fmt.Printf("votedCountは%v\n", votedCount)
-				panic(err)
+			if voteCount >= 1 {
+				if err := createVotes(voteCount, user.ID, candidate.ID, c.PostForm("keyword")); err != nil {
+					fmt.Printf("userは\n %#v\n", user)
+					fmt.Printf("user.Votesは%v\n", user.Votes)
+					fmt.Printf("voteCountは%v\n", voteCount)
+					fmt.Printf("votedCountは%v\n", votedCount)
+					panic(err)
+				}
 			}
 
 			message = "投票に成功しました"
