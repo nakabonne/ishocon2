@@ -166,7 +166,8 @@ func main() {
 	// POST /vote
 	r.POST("/vote", func(c *gin.Context) {
 		//user, userErr := getUser(c.PostForm("name"), c.PostForm("address"), c.PostForm("mynumber"))
-		user, userExist := usersMap[c.PostForm("mynumber")]
+		key := c.PostForm("name") + c.PostForm("address") + c.PostForm("mynumber")
+		user, userExist := usersMap[key]
 		candidate, cndErr := getCandidateByName(c.PostForm("candidate"))
 		votedCount := getUserVotedCount(user.ID)
 		//candidates := getAllCandidate()
@@ -235,6 +236,6 @@ func main() {
 	})
 
 	// 必要になったらコメント外す
-	//gobCache()
+	gobCache()
 	r.Run(":8080")
 }

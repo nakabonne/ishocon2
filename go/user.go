@@ -42,7 +42,8 @@ func cacheUsers() error {
 		if err != nil {
 			return err
 		}
-		usersMap[mynumber] = &User{
+		key := name + address + mynumber
+		usersMap[key] = &User{
 			ID:       id,
 			Name:     name,
 			Address:  address,
