@@ -26,8 +26,11 @@ func getUserVotedCount(userID int) (count int) {
 }
 
 func createVote(userID int, candidateID int, keyword string) {
-	db.Exec("INSERT INTO votes (user_id, candidate_id, keyword) VALUES (?, ?, ?)",
+	_, err := db.Exec("INSERT INTO votes (user_id, candidate_id, keyword) VALUES (?, ?, ?)",
 		userID, candidateID, keyword)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func createVotes(voteCount, userID, candidateID int, keyword string) error {
