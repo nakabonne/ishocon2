@@ -1,5 +1,10 @@
 package main
 
+import (
+	"encoding/gob"
+	"os"
+)
+
 // User Model
 type User struct {
 	ID       int
@@ -46,4 +51,17 @@ func cacheUsers() error {
 		}
 	}
 	return nil
+}
+
+// 事前にgobでファイル化
+func gobCache() {
+	file, err := os.Create("./usersMap.gob")
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+	if err := cacheUsers(); err != nil {
+		panic(err)
+	}
+	gob.NewEncoder(file).Encode(&usersMap)
 }

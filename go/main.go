@@ -2,12 +2,13 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
+	"encoding/gob"
 	"html/template"
 	"net/http"
 	"os"
 	"sort"
 	"strconv"
+	"sync"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/contrib/static"
@@ -21,6 +22,7 @@ var (
 	electionResults  []CandidateElectionResult
 	candidates       []Candidate
 	usersMap         map[string]*User
+	usersMapMu       sync.Mutex
 )
 
 func getEnv(key, fallback string) string {
@@ -31,6 +33,7 @@ func getEnv(key, fallback string) string {
 }
 
 func main() {
+	gobCache()
 	// database setting
 	user := getEnv("ISHOCON2_DB_USER", "ishocon")
 	pass := getEnv("ISHOCON2_DB_PASSWORD", "ishocon")
@@ -200,9 +203,26 @@ func main() {
 	r.GET("/initialize", func(c *gin.Context) {
 		db.Exec("DELETE FROM votes")
 		candidates = getAllCandidate()
-		if err := cacheUsers(); err != nil {
-			fmt.Println("エラー", err)
-		}
+
+		// gobファイルからuser情報読み込む
+		var wg sync.WaitGroup
+		go func() {
+			wg.Add(1)
+			defer wg.Done()
+
+			file, err := os.Open("./usersMap.gob")
+			if err != nil {
+				panic(err)
+			}
+			defer file.Close()
+			usersMapMu.Lock()
+			defer usersMapMu.Unlock()
+
+			err = gob.NewDecoder(file).Decode(&usersMap)
+			if err != nil {
+				panic(err)
+			}
+		}()
 
 		c.String(http.StatusOK, "Finish")
 	})
