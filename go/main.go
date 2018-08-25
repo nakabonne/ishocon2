@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"encoding/gob"
+	"fmt"
 	"html/template"
 	"net/http"
 	"os"
@@ -165,6 +166,7 @@ func main() {
 	// POST /vote
 	r.POST("/vote", func(c *gin.Context) {
 		//user, userErr := getUser(c.PostForm("name"), c.PostForm("address"), c.PostForm("mynumber"))
+		fmt.Printf("usersは %#v\n", usersMap)
 		user, userExist := usersMap[c.PostForm("mynumber")]
 		candidate, cndErr := getCandidateByName(c.PostForm("candidate"))
 		votedCount := getUserVotedCount(user.ID)
@@ -204,28 +206,29 @@ func main() {
 		candidates = getAllCandidate()
 
 		// gobファイルからuser情報読み込む
-		var wg sync.WaitGroup
-		go func() {
-			wg.Add(1)
-			defer wg.Done()
+		//var wg sync.WaitGroup
+		//go func() {
+		//wg.Add(1)
+		//defer wg.Done()
 
-			file, err := os.Open("./usersMap.gob")
-			if err != nil {
-				panic(err)
-			}
-			defer file.Close()
-			usersMapMu.Lock()
-			defer usersMapMu.Unlock()
+		file, err := os.Open("./usersMap.gob")
+		if err != nil {
+			panic(err)
+		}
+		defer file.Close()
+		//usersMapMu.Lock()
+		//defer usersMapMu.Unlock()
 
-			err = gob.NewDecoder(file).Decode(&usersMap)
-			if err != nil {
-				panic(err)
-			}
-		}()
+		err = gob.NewDecoder(file).Decode(&usersMap)
+		if err != nil {
+			panic(err)
+		}
+		//}()
 
 		c.String(http.StatusOK, "Finish")
 	})
 
-	gobCache()
+	// 必要になったらコメント外す
+	//gobCache()
 	r.Run(":8080")
 }
