@@ -33,7 +33,6 @@ func getEnv(key, fallback string) string {
 }
 
 func main() {
-	gobCache()
 	// database setting
 	user := getEnv("ISHOCON2_DB_USER", "ishocon")
 	pass := getEnv("ISHOCON2_DB_PASSWORD", "ishocon")
@@ -227,5 +226,6 @@ func main() {
 		c.String(http.StatusOK, "Finish")
 	})
 
+	gobCache()
 	r.Run(":8080")
 }
