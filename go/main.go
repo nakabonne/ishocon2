@@ -174,7 +174,8 @@ func main() {
 
 		var message string
 		r.SetHTMLTemplate(template.Must(template.ParseFiles(layout, "templates/vote.tmpl")))
-		if !userExist {
+		// TODO: これでだめだったら、keyを全フィールド合わせたstringにする
+		if !userExist || user.Name != c.PostForm("name") || user.Address != c.PostForm("address") {
 			message = "個人情報に誤りがあります"
 		} else if user.Votes < voteCount+votedCount {
 			message = "投票数が上限を超えています"
