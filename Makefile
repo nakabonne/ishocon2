@@ -19,6 +19,7 @@ set-slow-log:
 
 mysqldumpslow:
 	sudo mysqldumpslow -s t /var/lib/mysql/ip-10-0-1-227-slow.log > ~/tmp/slow.log
+	sudo cp /dev/null /var/lib/mysql/ip-10-0-1-227-slow.log
 
 restart-mysql:
 	sudo /etc/init.d/mysql restart
