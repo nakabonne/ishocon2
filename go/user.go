@@ -19,6 +19,7 @@ func getUser(name string, address string, myNumber string) (user User, err error
 // cacheUsers はメモリに全userをのせます
 func cacheUsers() error {
 	//usersMap = make(map[string]User, 0, 1000)
+	usersMap = map[string]*User{}
 	rows, err := db.Query(`
 	SELECT * FROM users
 	`)
