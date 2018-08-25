@@ -14,7 +14,7 @@ rotate:
 
 set-slow-log:
 	sudo mysql -uishocon -pishocon -e "set global slow_query_log = 1"
-	sudo mysql -uishocon -pishocon -e "set global long_query_time = 0.1"
+	sudo mysql -uishocon -pishocon -e "set global long_query_time = 0.01"
 	sudo mysql -uishocon -pishocon -e "set global log_queries_not_using_indexes = 1"
 
 mysqldumpslow:

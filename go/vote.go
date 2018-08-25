@@ -25,6 +25,20 @@ func createVote(userID int, candidateID int, keyword string) {
 		userID, candidateID, keyword)
 }
 
+func createVotes(voteCount, userID, candidateID int, keyword string) error {
+	valueStrings := make([]string, 0, voteCount)
+	valueArgs := make([]interface{}, 0, voteCount*3)
+	for i := 0; i < voteCount; i++ {
+		valueStrings = append(valueStrings, "(?, ?, ?)")
+		valueArgs = append(valueArgs, userID)
+		valueArgs = append(valueArgs, candidateID)
+		valueArgs = append(valueArgs, keyword)
+	}
+	stmt := fmt.Sprintf("INSERT INTO votes (user_id, candidate_id, keyword) VALUES %s", strings.Join(valueStrings, ","))
+	_, err := db.Exec(stmt, valueArgs...)
+	return err
+}
+
 func getVoiceOfSupporter(candidateIDs []int) (voices []string) {
 	rows, err := db.Query(`
     SELECT keyword
