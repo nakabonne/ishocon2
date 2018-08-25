@@ -18,6 +18,7 @@ var (
 	db               *sql.DB
 	voteCountByParty int
 	electionResults  []CandidateElectionResult
+	candidates       []Candidate
 )
 
 func getEnv(key, fallback string) string {
@@ -148,7 +149,7 @@ func main() {
 
 	// GET /vote
 	r.GET("/vote", func(c *gin.Context) {
-		candidates := getAllCandidate()
+		//candidates := getAllCandidate()
 
 		r.SetHTMLTemplate(template.Must(template.ParseFiles(layout, "templates/vote.tmpl")))
 		c.HTML(http.StatusOK, "base", gin.H{
@@ -162,7 +163,7 @@ func main() {
 		user, userErr := getUser(c.PostForm("name"), c.PostForm("address"), c.PostForm("mynumber"))
 		candidate, cndErr := getCandidateByName(c.PostForm("candidate"))
 		votedCount := getUserVotedCount(user.ID)
-		candidates := getAllCandidate()
+		//candidates := getAllCandidate()
 		voteCount, _ := strconv.Atoi(c.PostForm("vote_count"))
 
 		var message string
@@ -191,6 +192,7 @@ func main() {
 
 	r.GET("/initialize", func(c *gin.Context) {
 		db.Exec("DELETE FROM votes")
+		candidates = getAllCandidate()
 
 		c.String(http.StatusOK, "Finish")
 	})
