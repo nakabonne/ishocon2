@@ -166,7 +166,6 @@ func main() {
 	// POST /vote
 	r.POST("/vote", func(c *gin.Context) {
 		//user, userErr := getUser(c.PostForm("name"), c.PostForm("address"), c.PostForm("mynumber"))
-		fmt.Printf("usersは %#v\n", usersMap)
 		user, userExist := usersMap[c.PostForm("mynumber")]
 		candidate, cndErr := getCandidateByName(c.PostForm("candidate"))
 		votedCount := getUserVotedCount(user.ID)
