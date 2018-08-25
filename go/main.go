@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"encoding/gob"
+	"fmt"
 	"html/template"
 	"net/http"
 	"os"
@@ -188,6 +189,7 @@ func main() {
 				createVote(user.ID, candidate.ID, c.PostForm("keyword"))
 			}*/
 			if err := createVotes(voteCount, user.ID, candidate.ID, c.PostForm("keyword")); err != nil {
+				fmt.Printf("userは\n %#v\n", user)
 				panic(err)
 			}
 
