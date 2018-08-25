@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"html/template"
 	"net/http"
 	"os"
@@ -199,7 +200,9 @@ func main() {
 	r.GET("/initialize", func(c *gin.Context) {
 		db.Exec("DELETE FROM votes")
 		candidates = getAllCandidate()
-		cacheUsers()
+		if err := cacheUsers(); err != nil {
+			fmt.Println("エラー", err)
+		}
 
 		c.String(http.StatusOK, "Finish")
 	})
