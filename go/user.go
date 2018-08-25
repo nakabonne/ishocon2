@@ -45,7 +45,7 @@ func cacheUsers() error {
 		}
 		key := name + address + mynumber
 		usersMap[key] = &User{
-			//	ID:       id,
+			ID:       id,
 			Name:     name,
 			Address:  address,
 			MyNumber: mynumber,

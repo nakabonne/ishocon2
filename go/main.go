@@ -237,6 +237,6 @@ func main() {
 	})
 
 	// 必要になったらコメント外す
-	//gobCache()
+	gobCache()
 	r.Run(":8080")
 }
