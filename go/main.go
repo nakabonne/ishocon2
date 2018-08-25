@@ -14,7 +14,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var db *sql.DB
+var (
+	db               *sql.DB
+	voteCountByParty int
+)
 
 func getEnv(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {
@@ -120,7 +123,9 @@ func main() {
 			}
 		}*/
 		// TODO: あとでgo内インメモリキャッシュ化する
-		votes := getVoteCountByParty(partyName)
+		if voteCountByParty == 0 {
+			voteCountByParty = getVoteCountByParty(partyName)
+		}
 
 		candidates := getCandidatesByPoliticalParty(partyName)
 		candidateIDs := []int{}
@@ -132,7 +137,7 @@ func main() {
 		r.SetHTMLTemplate(template.Must(template.ParseFiles(layout, "templates/political_party.tmpl")))
 		c.HTML(http.StatusOK, "base", gin.H{
 			"politicalParty": partyName,
-			"votes":          votes,
+			"votes":          voteCountByParty,
 			"candidates":     candidates,
 			"keywords":       keywords,
 		})
