@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/gob"
+	"fmt"
 	"os"
 )
 
@@ -64,5 +65,7 @@ func gobCache() {
 	if err := cacheUsers(); err != nil {
 		panic(err)
 	}
-	gob.NewEncoder(file).Encode(&usersMap)
+	if err := gob.NewEncoder(file).Encode(&usersMap); err != nil {
+		fmt.Println("gobのエラー", err)
+	}
 }
