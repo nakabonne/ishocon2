@@ -48,3 +48,24 @@ func getVoiceOfSupporter(candidateIDs []int) (voices []string) {
 	}
 	return
 }
+
+func getVoteCountByParty(party string) (int count) {
+	rows, err := db.Query(`
+    select count(*) as count
+    from votes v
+    inner join candidates c on c.id = v.candidate_id
+    where c.political_party = ?;
+`, party)
+	if err != nil {
+		return nil
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		err = rows.Scan(&count)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+	return
+}

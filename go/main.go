@@ -112,13 +112,15 @@ func main() {
 	// GET /political_parties/:name(string)
 	r.GET("/political_parties/:name", func(c *gin.Context) {
 		partyName := c.Param("name")
-		var votes int
+		/*var votes int
 		electionResults := getElectionResult()
 		for _, r := range electionResults {
 			if r.PoliticalParty == partyName {
 				votes += r.VoteCount
 			}
-		}
+		}*/
+		// TODO: あとでgo内インメモリキャッシュ化する
+		votes := getVoteCountByParty(partyName)
 
 		candidates := getCandidatesByPoliticalParty(partyName)
 		candidateIDs := []int{}
