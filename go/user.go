@@ -23,7 +23,9 @@ func cacheUsers() {
 	SELECT * FROM users
 	`)
 	if err != nil {
-		return nil
+		if err != nil {
+			panic(err.Error())
+		}
 	}
 
 	defer rows.Close()
