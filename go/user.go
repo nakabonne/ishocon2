@@ -15,3 +15,31 @@ func getUser(name string, address string, myNumber string) (user User, err error
 	err = row.Scan(&user.ID, &user.Name, &user.Address, &user.MyNumber, &user.Votes)
 	return
 }
+
+// cacheUsers はメモリに全userをのせます
+func cacheUsers() error {
+	users = make(map[string]User, 0, 1000)
+	rows, err := db.Query(`
+	SELECT * FROM users
+	`)
+	if err != nil {
+		return nil
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		var name, address, mynumber string
+		err = rows.Scan(&name, &address, &mynumber, &votes)
+		if err != nil {
+			panic(err.Error())
+		}
+		usersMap[mynumber] = &User{
+			Name:     name,
+			Address:  address,
+			MyNumber: mynumber,
+			Votes:    votes,
+		}
+	}
+	return
+
+}

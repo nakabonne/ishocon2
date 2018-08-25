@@ -19,6 +19,7 @@ var (
 	voteCountByParty int
 	electionResults  []CandidateElectionResult
 	candidates       []Candidate
+	usersMap         map[string]*User
 )
 
 func getEnv(key, fallback string) string {
@@ -160,7 +161,8 @@ func main() {
 
 	// POST /vote
 	r.POST("/vote", func(c *gin.Context) {
-		user, userErr := getUser(c.PostForm("name"), c.PostForm("address"), c.PostForm("mynumber"))
+		//user, userErr := getUser(c.PostForm("name"), c.PostForm("address"), c.PostForm("mynumber"))
+		user, userExist := usersMap[c.PostForm("mynumber")]
 		candidate, cndErr := getCandidateByName(c.PostForm("candidate"))
 		votedCount := getUserVotedCount(user.ID)
 		//candidates := getAllCandidate()
@@ -168,7 +170,7 @@ func main() {
 
 		var message string
 		r.SetHTMLTemplate(template.Must(template.ParseFiles(layout, "templates/vote.tmpl")))
-		if userErr != nil {
+		if !userExist {
 			message = "個人情報に誤りがあります"
 		} else if user.Votes < voteCount+votedCount {
 			message = "投票数が上限を超えています"
@@ -197,6 +199,7 @@ func main() {
 	r.GET("/initialize", func(c *gin.Context) {
 		db.Exec("DELETE FROM votes")
 		candidates = getAllCandidate()
+		cacheUsers()
 
 		c.String(http.StatusOK, "Finish")
 	})
