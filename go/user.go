@@ -17,8 +17,8 @@ func getUser(name string, address string, myNumber string) (user User, err error
 }
 
 // cacheUsers はメモリに全userをのせます
-func cacheUsers() error {
-	users = make(map[string]User, 0, 1000)
+func cacheUsers() {
+	//usersMap = make(map[string]User, 0, 1000)
 	rows, err := db.Query(`
 	SELECT * FROM users
 	`)
@@ -29,6 +29,7 @@ func cacheUsers() error {
 	defer rows.Close()
 	for rows.Next() {
 		var name, address, mynumber string
+		var votes int
 		err = rows.Scan(&name, &address, &mynumber, &votes)
 		if err != nil {
 			panic(err.Error())
