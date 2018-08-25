@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"encoding/gob"
-	"fmt"
 	"html/template"
 	"net/http"
 	"os"
@@ -185,13 +184,14 @@ func main() {
 		} else if c.PostForm("keyword") == "" {
 			message = "投票理由を記入してください"
 		} else {
-			/*for i := 1; i <= voteCount; i++ {
+			for i := 1; i <= voteCount; i++ {
 				createVote(user.ID, candidate.ID, c.PostForm("keyword"))
-			}*/
-			if err := createVotes(voteCount, user.ID, candidate.ID, c.PostForm("keyword")); err != nil {
+			}
+			// TODO: ↓に戻す
+			/*if err := createVotes(voteCount, user.ID, candidate.ID, c.PostForm("keyword")); err != nil {
 				fmt.Printf("userは\n %#v\n", user)
 				panic(err)
-			}
+			}*/
 
 			message = "投票に成功しました"
 		}
