@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"encoding/gob"
-	"fmt"
 	"html/template"
 	"net/http"
 	"os"
