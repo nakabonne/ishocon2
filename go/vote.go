@@ -57,7 +57,7 @@ func getVoteCountByParty(party string) (count int) {
     where c.political_party = ?;
 `, party)
 	if err != nil {
-		return nil
+		return panic(err.Error())
 	}
 
 	defer rows.Close()
