@@ -227,7 +227,6 @@ func main() {
 			panic(err)
 		}
 		//}()
-		fmt.Printf("usersMapは\n %#v\n", usersMap)
 
 		c.String(http.StatusOK, "Finish")
 	})
