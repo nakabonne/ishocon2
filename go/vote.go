@@ -49,7 +49,7 @@ func getVoiceOfSupporter(candidateIDs []int) (voices []string) {
 	return
 }
 
-func getVoteCountByParty(party string) (int count) {
+func getVoteCountByParty(party string) (count int) {
 	rows, err := db.Query(`
     select count(*) as count
     from votes v
